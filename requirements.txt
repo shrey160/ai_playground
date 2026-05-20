@@ -14,3 +14,4 @@ pyzmq
 tornado
 traitlets
 pandas
+streamlit

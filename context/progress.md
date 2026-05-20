@@ -53,6 +53,16 @@
 - `test_nvidia_nim_nemotron_reasoning.ipynb` - Test NVIDIA NIM reasoning model
 - `test_config_providers.ipynb` - Config-driven provider switching demo
 
+### Streamlit Prototype
+- **`prototypes/research_app/`**: Streamlit web UI for the research pipeline
+  - Provider selection sidebar (NVIDIA/OpenRouter)
+  - Query classification visualization (task type, complexity, reasoning)
+  - Pipeline execution tracker with 4 steps
+  - Metrics dashboard: time, tokens, quality score, source count
+  - Results tabs: Answer, Sources (with extracted content), Details, Raw JSON
+  - Query history with loadable previous results
+  - Settings: max search results, validation toggle, quality threshold
+
 ### Test Scripts
 - `test_api.py` - API connectivity test
 - `test_pipeline.py` - End-to-end pipeline test
@@ -207,6 +217,11 @@ test_openrouter_nvidia/
 │   ├── test_imports.py         # Module import verification
 │   └── test_graph_compile.py   # Graph structure validation
 │
+├── prototypes/                   # UI prototypes
+│   └── research_app/            # Streamlit research pipeline app
+│       ├── app.py               # Main Streamlit application
+│       └── README.md            # Usage documentation
+│
 └── context/
     └── progress.md             # This file
 ```
@@ -227,7 +242,7 @@ test_openrouter_nvidia/
 - [ ] Add Tavily/Firecrawl integration (optional, requires API keys)
 - [ ] Create agent workflow with persistent memory
 - [ ] Add background cache refresh
-- [ ] Build web UI for interactive use
+- [x] Build web UI for interactive use (Streamlit prototype)
 
 ## Environment
 - Python 3.10
