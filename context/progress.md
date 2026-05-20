@@ -57,11 +57,15 @@
 - **`prototypes/research_app/`**: Streamlit web UI for the research pipeline
   - Provider selection sidebar (NVIDIA/OpenRouter)
   - Query classification visualization (task type, complexity, reasoning)
+  - **Live Thinking Panel**: Real-time step-by-step execution visibility
+    - Shows classify → execute/research → validate → fallback progress
+    - Timestamps and detailed reasoning for each step
+    - Toggle to show/hide thinking process
   - Pipeline execution tracker with 4 steps
   - Metrics dashboard: time, tokens, quality score, source count
   - Results tabs: Answer, Sources (with extracted content), Details, Raw JSON
   - Query history with loadable previous results
-  - Settings: max search results, validation toggle, quality threshold
+  - Settings: max search results, validation toggle, quality threshold, show thinking
 
 ### Test Scripts
 - `test_api.py` - API connectivity test
@@ -70,6 +74,17 @@
 - `test_router.py` - Model router example usage
 - `test_imports.py` - LangGraph module import verification
 - `test_graph_compile.py` - Graph structure validation
+
+### Bug Fixes
+- Fixed `sys.path` resolution in `prototypes/research_app/app.py`
+  - Corrected path to reach project root from nested prototype directory
+  - Fixed `config.yaml` loading path (was looking in `prototypes/` instead of project root)
+- Fixed `KeyError: 'needs_search'` in Streamlit app
+  - Changed to `.get()` with default values for robust field access
+
+### Documentation Updates
+- **Root `README.md`**: Complete rewrite with project overview, architecture, quick start
+- **`prototypes/research_app/README.md`**: Updated paths and architecture details
 
 ### Model Routing System
 - **Orchestrator** (configurable alias) - Task classifier & validator
@@ -236,13 +251,14 @@ test_openrouter_nvidia/
 - [x] Implement structured output with Pydantic models
 - [x] Wrap search/extract as LangChain Tools
 - [x] Config-driven provider system (YAML + env vars)
+- [x] Build web UI for interactive use (Streamlit prototype)
+- [x] Add live thinking visibility to Streamlit app
 - [ ] Add automatic failover between providers (future)
 - [ ] Add runtime provider switching (future)
 - [ ] Add streaming support for real-time responses
 - [ ] Add Tavily/Firecrawl integration (optional, requires API keys)
 - [ ] Create agent workflow with persistent memory
 - [ ] Add background cache refresh
-- [x] Build web UI for interactive use (Streamlit prototype)
 
 ## Environment
 - Python 3.10
