@@ -12,3 +12,7 @@ env/
 
 # Environment variables
 .env
+
+# Local data
+data/
+*.db

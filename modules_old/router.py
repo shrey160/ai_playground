@@ -4,7 +4,6 @@ import time
 from typing import Dict, List, Optional, Any
 from dotenv import load_dotenv
 from openai import OpenAI
-from modules.config import get_config
 
 load_dotenv()
 
@@ -12,14 +11,14 @@ load_dotenv()
 class ModelRouter:
     """Orchestrator-based model routing system."""
     
+    ORCHESTRATOR_MODEL = "nvidia/nemotron-3-super-120b-a12b:free"
+    WORKER_MODEL = "nvidia/nemotron-3-nano-30b-a3b:free"
+    
     def __init__(self):
-        config = get_config()
         self.client = OpenAI(
-            base_url=config.base_url,
-            api_key=config.api_key,
+            base_url="https://openrouter.ai/api/v1",
+            api_key=os.getenv("OPENROUTER_API_KEY"),
         )
-        self.orchestrator_model = config.get_model("orchestrator")
-        self.worker_model = config.get_model("worker")
     
     def classify_task(self, query: str) -> Dict[str, Any]:
         """Classify task type using orchestrator."""
@@ -38,7 +37,7 @@ Rules:
 - needs_search: true if query asks about recent events or specific real-time data"""
         
         response = self.client.chat.completions.create(
-            model=self.orchestrator_model,
+            model=self.ORCHESTRATOR_MODEL,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": f"Classify this query: {query}"}
@@ -59,7 +58,7 @@ Rules:
     ) -> Dict[str, Any]:
         """Execute task with appropriate model based on type."""
         
-        model = self.worker_model if task_type == "simple" else self.orchestrator_model
+        model = self.WORKER_MODEL if task_type == "simple" else self.ORCHESTRATOR_MODEL
         
         messages = []
         if system_message:
@@ -71,7 +70,7 @@ Rules:
             "messages": messages
         }
         
-        if reasoning and model == self.orchestrator_model:
+        if reasoning and model == self.ORCHESTRATOR_MODEL:
             kwargs["extra_body"] = {"reasoning": {"enabled": True}}
         
         start_time = time.time()
@@ -111,7 +110,7 @@ Respond with JSON:
 }}"""
         
         val_response = self.client.chat.completions.create(
-            model=self.orchestrator_model,
+            model=self.ORCHESTRATOR_MODEL,
             messages=[
                 {"role": "system", "content": "You are a quality validator. Be strict but fair."},
                 {"role": "user", "content": validation_prompt}

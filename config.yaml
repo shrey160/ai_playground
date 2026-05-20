@@ -1,0 +1,18 @@
+providers:
+  openrouter:
+    name: "OpenRouter"
+    base_url: "https://openrouter.ai/api/v1"
+    api_key_env: "OPENROUTER_API_KEY"
+    models:
+      orchestrator: "nvidia/nemotron-3-super-120b-a12b:free"
+      worker: "nvidia/nemotron-3-nano-30b-a3b:free"
+
+  nvidia:
+    name: "NVIDIA NIM"
+    base_url: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_NIM_API_KEY"
+    models:
+      orchestrator: "nvidia/nemotron-3-super-120b-a12b"
+      worker: "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning"
+
+default_provider: "nvidia"

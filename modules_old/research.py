@@ -1,29 +1,14 @@
 import requests
 from typing import Dict, List, Any, Optional
 from ddgs import DDGS
-from modules.config import get_config
 
 
 class ResearchPipeline:
     """Research pipeline with web search and content extraction."""
     
-    def __init__(self, client=None, model: Optional[str] = None):
-        """Initialize research pipeline.
-        
-        Args:
-            client: OpenAI client (optional, creates one if not provided)
-            model: Model name override (optional, uses config default)
-        """
-        if client is None:
-            from openai import OpenAI
-            config = get_config()
-            client = OpenAI(
-                base_url=config.base_url,
-                api_key=config.api_key,
-            )
-        
+    def __init__(self, client, model: str = "nvidia/nemotron-3-nano-30b-a3b:free"):
         self.client = client
-        self.model = model or get_config().get_model("worker")
+        self.model = model
         self.ddgs = DDGS()
     
     def search(
